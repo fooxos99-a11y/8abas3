@@ -191,7 +191,7 @@ function GameContent() {
         <g key={i} transform={`translate(${x},${y})`} onClick={() => handleHexClick(i)} style={{ cursor: status ? "default" : "pointer" }}>
           <polygon
             points="50,0 100,29 100,87 50,116 0,87 0,29"
-            fill={status === "red" ? "#e20000" : status === "green" ? "#00e224" : "#ffffff"}
+            fill={status === "red" ? "#df103a" : status === "green" ? "#10dfb5" : "#ffffff"}
             stroke="#2c3e50"
             strokeWidth={3}
             style={{ transition: "fill 0.3s ease" }}
@@ -243,14 +243,14 @@ function GameContent() {
       </div>
 
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", maxWidth: "1300px", gap: "40px" }}>
-        <TeamScoreCard name={team2} score={scoreGreen} color="#00e224" side="left" />
+        <TeamScoreCard name={team2} score={scoreGreen} color="#10dfb5" side="left" />
         <div style={{ flex: "1", position: "relative", display: "flex", justifyContent: "center" }}>
           <div style={{ width: "100%", maxWidth: "650px", filter: "drop-shadow(0 20px 30px rgba(0,0,0,0.1))" }}>
             <svg viewBox="-70 -70 690 605" style={{ width: "100%", height: "auto", overflow: "visible" }}>
               <foreignObject x="-80" y="-80" width="710" height="624">
                 <div style={{
                   width: '100%', height: '100%', borderRadius: '30px',
-                  background: 'conic-gradient(from -45deg, #00e224 90deg, #e20000 90deg 180deg, #00e224 180deg 270deg, #e20000 270deg)',
+                  background: 'conic-gradient(from -45deg, #10dfb5 90deg, #df103a 90deg 180deg, #10dfb5 180deg 270deg, #df103a 270deg)',
                   boxShadow: 'inset 0 0 0 5px rgba(0,0,0,0.05)'
                 }} />
               </foreignObject>
@@ -259,7 +259,7 @@ function GameContent() {
             </svg>
           </div>
         </div>
-        <TeamScoreCard name={team1} score={scoreRed} color="#e20000" side="right" />
+        <TeamScoreCard name={team1} score={scoreRed} color="#df103a" side="right" />
       </div>
 
       {showQuestionModal && (
@@ -279,16 +279,16 @@ function GameContent() {
           >
             <h3 style={{ marginBottom: 24, fontSize: "1.3rem", color: "#2c3e50" }}>{currentQuestion}</h3>
             {!showAnswer && currentAnswer && (
-              <button onClick={handleShowAnswer} style={{ padding: "13px 38px", background: "#2c3e50", color: "white", border: "none", borderRadius: "12px", cursor: "pointer", fontWeight: "bold", fontSize: "1.1rem", marginBottom: 16 }}>الإجابة</button>
+              <button onClick={handleShowAnswer} style={{ padding: "14px 40px", background: "#2c3e50", color: "white", border: "none", borderRadius: "12px", cursor: "pointer", fontWeight: "bold", fontSize: "1.2rem", marginBottom: 16, marginTop: 32 }}>الإجابة</button>
             )}
             {showAnswer && currentAnswer && (
               <>
-                <div style={{ fontSize: "1.1rem", color: "#008a1e", marginBottom: 18, fontWeight: "bold" }}>{currentAnswer}</div>
-                <button onClick={handleAnswered} style={{ padding: "13px 38px", background: "#e20000", color: "white", border: "none", borderRadius: "12px", cursor: "pointer", fontWeight: "bold", fontSize: "1.1rem" }}>من جاوب؟</button>
+                <div style={{ fontSize: "1.5rem", color: "#008a1e", marginBottom: 18, fontWeight: "bold" }}>{currentAnswer}</div>
+                <div style={{ display: "flex", gap: "16px", justifyContent: "center", marginTop: 32 }}>
+                  <button onClick={() => { setShowQuestionModal(false); setShowTeamModal(true); assignColor("red"); }} style={{ padding: "14px 40px", background: "#df103a", color: "white", border: "none", borderRadius: "12px", cursor: "pointer", fontWeight: "bold", fontSize: "1.2rem" }}>{team1}</button>
+                  <button onClick={() => { setShowQuestionModal(false); setShowTeamModal(true); assignColor("green"); }} style={{ padding: "14px 40px", background: "#10dfb5", color: "white", border: "none", borderRadius: "12px", cursor: "pointer", fontWeight: "bold", fontSize: "1.2rem" }}>{team2}</button>
+                </div>
               </>
-            )}
-            {!currentAnswer && (
-              <button onClick={handleAnswered} style={{ padding: "13px 38px", background: "#e20000", color: "white", border: "none", borderRadius: "12px", cursor: "pointer", fontWeight: "bold", fontSize: "1.1rem" }}>متابعة</button>
             )}
           </div>
         </div>
@@ -309,10 +309,10 @@ function GameContent() {
             }}
             onClick={e => e.stopPropagation()}
           >
-            <h3 style={{ marginBottom: "25px", fontSize: "1.5rem", color: "#333" }}>من صاحب الإجابة الصحيحة؟</h3>
+            <h3 style={{ marginBottom: "25px", fontSize: "1.5rem", color: "#333" }}>اختر الفريق صاحب الإجابة:</h3>
             <div style={{ display: "flex", gap: "20px", flexDirection: 'row-reverse', justifyContent: 'center' }}>
-              <button onClick={() => assignColor("green")} style={{ padding: "15px 40px", background: "#00e224", color: "white", border: "none", borderRadius: "15px", cursor: "pointer", fontWeight: "bold", fontSize: "1.1rem" }}>{team2}</button>
-              <button onClick={() => assignColor("red")} style={{ padding: "15px 40px", background: "#e20000", color: "white", border: "none", borderRadius: "15px", cursor: "pointer", fontWeight: "bold", fontSize: "1.1rem" }}>{team1}</button>
+              <button onClick={() => assignColor("green")} style={{ padding: "15px 40px", background: "#10dfb5", color: "white", border: "none", borderRadius: "15px", cursor: "pointer", fontWeight: "bold", fontSize: "1.1rem" }}>{team2}</button>
+              <button onClick={() => assignColor("red")} style={{ padding: "15px 40px", background: "#df103a", color: "white", border: "none", borderRadius: "15px", cursor: "pointer", fontWeight: "bold", fontSize: "1.1rem" }}>{team1}</button>
             </div>
           </div>
         </div>
@@ -324,7 +324,8 @@ function GameContent() {
             <div style={{ fontSize: "5rem", marginBottom: "10px" }}>🏆</div>
             <h1 style={{ fontSize: "2.2rem", color: "#2c3e50", marginBottom: "10px" }}>انتهت الجولة!</h1>
             <p style={{ fontSize: "1.5rem", color: "#666", marginBottom: "30px" }}>{winMessage}</p>
-            <button onClick={resetGame} style={{ width: "100%", padding: "15px", background: "#2c3e50", color: "white", border: "none", borderRadius: "15px", fontSize: "1.2rem", cursor: "pointer", fontWeight: "bold" }}>لعب مرة أخرى</button>
+            <button onClick={resetGame} style={{ width: "100%", padding: "15px", background: "#2c3e50", color: "white", border: "none", borderRadius: "15px", fontSize: "1.2rem", cursor: "pointer", fontWeight: "bold", marginBottom: "16px" }}>لعب مرة أخرى</button>
+            <button onClick={() => window.location.href = "/competitions"} style={{ width: "100%", padding: "13px", background: "#d8a355", color: "#fff", border: "none", borderRadius: "15px", fontSize: "1.1rem", cursor: "pointer", fontWeight: "bold" }}>العودة للرئيسية</button>
           </div>
         </div>
       )}
