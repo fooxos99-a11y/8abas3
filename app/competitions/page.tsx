@@ -26,6 +26,7 @@ export default function CompetitionsPage() {
   }, [router])
 
   const games = [
+          // ...existing games...
     {
       id: "categories",
       title: "لعبة الفئات",
@@ -47,7 +48,7 @@ export default function CompetitionsPage() {
     {
       id: "guess-images",
       title: "خمن الصورة",
-      description: "اكتشف معنى الصورة قبل الفريق الآخر",
+      description: "اكتشف معنى الصورة قبل الفريق الآخر للفوز",
       icon: Puzzle,
       color: "from-[#d8a355] to-[#c89547]",
       available: true,
@@ -56,11 +57,29 @@ export default function CompetitionsPage() {
       {
         id: "letter-hive",
         title: "خلية الحروف",
-        description: "لعبة تنافسية بين فريقين، يقوم كل فريق بمحاولة توصيل لونه من الجهتين لتحقيق الفوز",
+        description: "لعبة تنافسية بين فريقين لتوصيل اللون من الجهتين للفوز",
         icon: Grid3x3,
         color: "from-green-500 to-green-600",
         available: true,
         comingSoon: false,
+      },
+      {
+        id: "higher-lower",
+        title: "أعلى أو أقل",
+        description: "لعبة تحدي تعتمد على تخمين إذا كانت القيمة أعلى أو أقل من السابقة",
+        icon: Puzzle,
+        color: "from-pink-500 to-pink-700",
+        available: false,
+        comingSoon: true,
+      },
+      {
+        id: "millionaire-game",
+        title: "من سيربح المليون",
+        description: "لعبة ثقافية تعتمد على الإجابة عن أسئلة متدرجة الصعوبة للفوز بمليون",
+        icon: Lock,
+        color: "from-purple-500 to-purple-700",
+        available: false,
+        comingSoon: true,
       },
   ]
 
@@ -123,9 +142,8 @@ export default function CompetitionsPage() {
                     ابدأ اللعب
                   </button>
                 ) : (
-                  <button disabled className="w-full bg-gray-300 text-gray-500 font-bold py-3 px-6 rounded-lg cursor-not-allowed flex items-center justify-center gap-2">
-                    <Lock className="w-4 h-4" />
-                    غير متاح حالياً
+                  <button disabled className="w-full bg-gray-300 text-gray-500 font-bold py-3 px-6 rounded-lg cursor-not-allowed">
+                    ابدأ اللعب
                   </button>
                 )}
               </CardContent>
