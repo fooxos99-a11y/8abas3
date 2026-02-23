@@ -916,26 +916,6 @@ export default function AdminDashboard() {
                   <DialogDescription className="text-base">اختر العملية المطلوبة</DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-6">
-                                                      <Button
-                                                        onClick={() => {
-                                                          setIsGamesManagementDialogOpen(false)
-                                                          router.push("/admin/letter-hive-questions")
-                                                        }}
-                                                        className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold h-14 text-lg"
-                                                      >
-                                                        <BookOpen className="w-5 h-5 ml-2" />
-                                                        إدارة خلية الحروف
-                                                      </Button>
-                                    <Button
-                                      onClick={() => {
-                                        setIsGamesManagementDialogOpen(false)
-                                        router.push("/admin/letter-hive-questions")
-                                      }}
-                                      className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold h-14 text-lg"
-                                    >
-                                      <BookOpen className="w-5 h-5 ml-2" />
-                                      إدارة خلية الحروف
-                                    </Button>
                   <Button
                     onClick={() => {
                       setIsStudentManagementDialogOpen(false)
