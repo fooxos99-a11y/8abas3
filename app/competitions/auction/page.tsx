@@ -45,6 +45,8 @@ export default function AuctionGame() {
   const [timeLeft, setTimeLeft] = useState(60)
   const [timerActive, setTimerActive] = useState(false)
 
+  const [cycleNotification, setCycleNotification] = useState(false)
+
   // تعديل النقاط يدويًا
   const [editingTeam, setEditingTeam] = useState<number | null>(null)
   const [editScore, setEditScore] = useState("")
@@ -160,23 +162,33 @@ export default function AuctionGame() {
     }))
   }
 
-  const selectQuestion = async () => {
-    // فلترة الأسئلة غير المستخدمة
-    const usedIds = Array.isArray(usedQuestionIds) ? usedQuestionIds : []
-    const availableQuestions = allQuestions.filter(q => !usedIds.includes(q.id))
-    
-    // إذا انتهت الأسئلة، لا يتم تكرار أي سؤال أبداً لهذا الحساب
-    if (availableQuestions.length === 0) {
-      setCurrentQuestion(null)
-      setShowCategoryDialog(false)
-      alert("لقد أكملت جميع الأسئلة المتاحة لهذا الحساب!")
-      return
+  const resetUsedQuestions = async () => {
+    try {
+      await fetch("/api/used-questions?gameType=auction", { method: "DELETE" })
+      setUsedQuestionIds([])
+    } catch (error) {
+      console.error("Error resetting used questions:", error)
     }
+  }
+
+  const selectQuestion = async () => {
+    const usedIds = Array.isArray(usedQuestionIds) ? usedQuestionIds : []
+    let availableQuestions = allQuestions.filter(q => !usedIds.includes(q.id))
+
+    // إذا انتهت الأسئلة، أعد تعيينها من جديد
+    if (availableQuestions.length === 0) {
+      await resetUsedQuestions()
+      availableQuestions = [...allQuestions]
+      setCycleNotification(true)
+      setTimeout(() => setCycleNotification(false), 3000)
+    }
+
+    if (availableQuestions.length === 0) return
+
     // اختيار سؤال عشوائي من المتاحة
     const randomQuestion = availableQuestions[Math.floor(Math.random() * availableQuestions.length)]
     setCurrentQuestion(randomQuestion)
-    // حفظ السؤال كمستخدم
-    const newUsedIds = [...usedIds, randomQuestion.id]
+    const newUsedIds = [...(allQuestions.length === availableQuestions.length ? [] : usedIds), randomQuestion.id]
     setUsedQuestionIds(newUsedIds)
     await markQuestionAsUsed(randomQuestion.id)
     setShowCategoryDialog(true)
@@ -358,6 +370,16 @@ export default function AuctionGame() {
   // صفحة اللعبة
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#faf8f5] via-[#f5ead8] to-[#faf8f5] p-4 sm:p-8">
+
+      {/* إشعار إعادة الأسئلة */}
+      {cycleNotification && (
+        <div className="fixed top-4 inset-x-0 mx-auto max-w-sm z-50 px-4">
+          <div className="bg-[#1a2332] text-white text-sm font-semibold text-center rounded-xl px-5 py-3 shadow-xl">
+            🔄 تم إعادة جميع الأسئلة من جديد
+          </div>
+        </div>
+      )}
+
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-6 sm:mb-10">
