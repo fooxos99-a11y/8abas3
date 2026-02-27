@@ -813,384 +813,236 @@ export default function AdminDashboard() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-2xl text-[#1a2332]">جاري التحميل...</div>
+      <div className="min-h-screen flex items-center justify-center bg-[#fafaf9]">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 rounded-full border-2 border-[#D4AF37] border-t-transparent animate-spin" />
+          <p className="text-sm text-neutral-400">جاري التحميل...</p>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#f5f1e8] to-white">
+    <div className="min-h-screen flex flex-col bg-[#fafaf9]">
       <Header />
 
-      <main className="flex-1 py-12 px-4">
-        <div className="container mx-auto max-w-7xl">
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-[#1a2332] mb-2">لوحة تحكم الإدارة</h1>
-            <p className="text-lg text-[#1a2332]/70">إدارة شاملة لجميع الحلقات والمعلمين والطلاب</p>
+      <main className="flex-1 py-10 px-4">
+        <div className="container mx-auto max-w-5xl space-y-10">
+
+          {/* Page Title */}
+          <div className="border-b border-[#D4AF37]/50 pb-6">
+            <h1 className="text-3xl md:text-4xl font-bold text-[#1a2332]">لوحة التحكم</h1>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-8">
-            <Card className="border border-[#D4AF37]/30 shadow-md hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-white to-[#f5f1e8]/50">
-              <CardHeader className="pb-2 md:pb-3 px-3 md:px-6 pt-3 md:pt-6">
-                <CardTitle className="flex items-center gap-2 md:gap-3 text-base md:text-xl text-[#1a2332]">
-                  <div className="p-1.5 md:p-2 rounded-lg bg-gradient-to-br from-[#D4AF37]/20 to-[#C9A961]/20">
-                    <Users className="w-4 h-4 md:w-6 md:h-6 text-[#D4AF37]" />
-                  </div>
-                  <span className="text-sm md:text-xl">إجمالي الطلاب</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="px-3 md:px-6 pb-3 md:pb-6">
-                <div className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-[#D4AF37] to-[#C9A961] bg-clip-text text-transparent">
-                  {totalStudents}
+          {/* Stats Row */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { label: "الطلاب", value: totalStudents, icon: Users },
+              { label: "المعلمون", value: totalTeachers, icon: Settings },
+              { label: "الإداريون", value: totalAdmins, icon: ShieldCheck },
+              { label: "الحلقات", value: totalCircles, icon: BookOpen },
+            ].map(({ label, value, icon: Icon }) => (
+              <div key={label} className="bg-white rounded-2xl border border-[#D4AF37]/40 p-5 flex flex-col gap-3 shadow-sm hover:shadow-md transition-shadow duration-300">
+                <div className="w-11 h-11 rounded-xl bg-[#D4AF37]/8 border border-[#D4AF37]/40 flex items-center justify-center">
+                  <Icon className="w-4 h-4 text-[#D4AF37]" />
                 </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border border-[#D4AF37]/30 shadow-md hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-white to-[#f5f1e8]/50">
-              <CardHeader className="pb-2 md:pb-3 px-3 md:px-6 pt-3 md:pt-6">
-                <CardTitle className="flex items-center gap-2 md:gap-3 text-base md:text-xl text-[#1a2332]">
-                  <div className="p-1.5 md:p-2 rounded-lg bg-gradient-to-br from-[#D4AF37]/20 to-[#C9A961]/20">
-                    <Settings className="w-4 h-4 md:w-6 md:h-6 text-[#D4AF37]" />
-                  </div>
-                  <span className="text-sm md:text-xl">إجمالي المعلمين</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="px-3 md:px-6 pb-3 md:pb-6">
-                <div className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-[#D4AF37] to-[#C9A961] bg-clip-text text-transparent">
-                  {totalTeachers}
+                <div>
+                  <p className="text-3xl font-bold text-[#1a2332]">{value}</p>
+                  <p className="text-sm text-neutral-400 mt-1">{label}</p>
                 </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border border-[#D4AF37]/30 shadow-md hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-white to-[#f5f1e8]/50">
-              <CardHeader className="pb-2 md:pb-3 px-3 md:px-6 pt-3 md:pt-6">
-                <CardTitle className="flex items-center gap-2 md:gap-3 text-base md:text-xl text-[#1a2332]">
-                  <div className="p-1.5 md:p-2 rounded-lg bg-gradient-to-br from-[#D4AF37]/20 to-[#C9A961]/20">
-                    <ShieldCheck className="w-4 h-4 md:w-6 md:h-6 text-[#D4AF37]" />
-                  </div>
-                  <span className="text-sm md:text-xl">إجمالي الإداريين</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="px-3 md:px-6 pb-3 md:pb-6">
-                <div className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-[#D4AF37] to-[#C9A961] bg-clip-text text-transparent">
-                  {totalAdmins}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border border-[#D4AF37]/30 shadow-md hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-white to-[#f5f1e8]/50">
-              <CardHeader className="pb-2 md:pb-3 px-3 md:px-6 pt-3 md:pt-6">
-                <CardTitle className="flex items-center gap-2 md:gap-3 text-base md:text-xl text-[#1a2332]">
-                  <div className="p-1.5 md:p-2 rounded-lg bg-gradient-to-br from-[#D4AF37]/20 to-[#C9A961]/20">
-                    <BookOpen className="w-4 h-4 md:w-6 md:h-6 text-[#D4AF37]" />
-                  </div>
-                  <span className="text-sm md:text-xl">إجمالي الحلقات</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="px-3 md:px-6 pb-3 md:pb-6">
-                <div className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-[#D4AF37] to-[#C9A961] bg-clip-text text-transparent">
-                  {totalCircles}
-                </div>
-              </CardContent>
-            </Card>
+              </div>
+            ))}
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
-            <Dialog open={isStudentManagementDialogOpen} onOpenChange={setIsStudentManagementDialogOpen}>
-              <DialogTrigger asChild>
-                <Button
-                  className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold h-16 w-full text-base"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    setIsStudentManagementDialogOpen(true)
-                  }}
-                >
-                  <Users className="w-5 h-5 ml-2" />
-                  إدارة الطلاب
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[500px]">
-                <DialogHeader>
-                  <DialogTitle className="text-2xl text-[#1a2332]">إدارة الطلاب</DialogTitle>
-                  <DialogDescription className="text-base">اختر العملية المطلوبة</DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-6">
-                  <Button
-                    onClick={() => {
-                      setIsStudentManagementDialogOpen(false)
-                      setIsAddStudentDialogOpen(true)
-                    }}
-                    className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold h-14 text-lg"
-                  >
-                    <UserPlus className="w-5 h-5 ml-2" />
-                    إضافة طالب
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setIsStudentManagementDialogOpen(false)
-                      setIsRemoveStudentDialogOpen(true)
-                    }}
-                    className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold h-14 text-lg"
-                  >
-                    <UserMinus className="w-5 h-5 ml-2" />
-                    إزالة طالب
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setIsStudentManagementDialogOpen(false)
-                      handleOpenEditDialog()
-                    }}
-                    className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold h-14 text-lg"
-                  >
-                    <Settings className="w-5 h-5 ml-2" />
-                    تعديل بيانات الطالب
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setIsStudentManagementDialogOpen(false);
-                      setSelectedCircleForPoints("");
-                      setSelectedStudentForPoints("");
-                      setEditingStudentPoints(null);
-                      setNewPoints("");
-                      setIsEditPointsDialogOpen(true);
-                    }}
-                    className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold h-14 text-lg"
-                  >
-                    <Edit2 className="w-5 h-5 ml-2" />
-                    تعديل نقاط الطالب
-                  </Button>
-                  <Button
-                    onClick={handleOpenRecordsDialog}
-                    className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold h-14 text-lg"
-                  >
-                    <FileText className="w-5 h-5 ml-2" />
-                    سجلات الطلاب
-                  </Button>
+          {/* Action Sections */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            {/* Student Management */}
+            <div className="bg-white rounded-2xl border border-[#D4AF37]/40 shadow-sm overflow-hidden">
+              <div className="px-6 py-6 border-b border-[#D4AF37]/40 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-[#D4AF37]/10 flex items-center justify-center">
+                  <Users className="w-4 h-4 text-[#D4AF37]" />
                 </div>
-                <div className="flex justify-end">
-                  <Button
-                    variant="outline"
-                    onClick={() => setIsStudentManagementDialogOpen(false)}
-                    className="font-bold"
-                  >
-                    إغلاق
-                  </Button>
+                <h2 className="text-lg font-bold text-[#1a2332]">إدارة المستخدمين</h2>
+              </div>
+              <div className="divide-y divide-[#D4AF37]/25">
+                <Dialog open={isStudentManagementDialogOpen} onOpenChange={setIsStudentManagementDialogOpen}>
+                  <DialogTrigger asChild>
+                    <button
+                      onClick={(e) => { e.preventDefault(); setIsStudentManagementDialogOpen(true) }}
+                      className="w-full flex items-center justify-between px-6 py-5 hover:bg-[#D4AF37]/5 transition-colors duration-200 group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <Users className="w-5 h-5 text-[#C9A961] group-hover:text-[#D4AF37] transition-colors" />
+                        <span className="text-base font-medium text-neutral-700">إدارة الطلاب</span>
+                      </div>
+                      <span className="text-neutral-300 group-hover:text-[#D4AF37] transition-colors text-xl leading-none">‹</span>
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[480px]">
+                    <DialogHeader>
+                      <DialogTitle className="text-xl text-[#1a2332]">إدارة الطلاب</DialogTitle>
+                      <DialogDescription className="text-sm text-neutral-500">اختر العملية المطلوبة</DialogDescription>
+                    </DialogHeader>
+                    <div className="divide-y divide-[#D4AF37]/25 rounded-xl border border-[#D4AF37]/40 overflow-hidden mt-4">
+                      {[
+                        { icon: UserPlus, label: "إضافة طالب", action: () => { setIsStudentManagementDialogOpen(false); setIsAddStudentDialogOpen(true) } },
+                        { icon: UserMinus, label: "إزالة طالب", action: () => { setIsStudentManagementDialogOpen(false); setIsRemoveStudentDialogOpen(true) } },
+                        { icon: Settings, label: "تعديل بيانات الطالب", action: () => { setIsStudentManagementDialogOpen(false); handleOpenEditDialog() } },
+                        { icon: Edit2, label: "تعديل نقاط الطالب", action: () => { setIsStudentManagementDialogOpen(false); setSelectedCircleForPoints(""); setSelectedStudentForPoints(""); setEditingStudentPoints(null); setNewPoints(""); setIsEditPointsDialogOpen(true) } },
+                        { icon: FileText, label: "سجلات الطلاب", action: handleOpenRecordsDialog },
+                        { icon: Award, label: "إنجازات الطلاب", action: () => { setIsStudentManagementDialogOpen(false); router.push("/admin/students-achievements") } },
+                      ].map(({ icon: Ic, label, action }) => (
+                        <button key={label} onClick={action} className="w-full flex items-center justify-between px-5 py-5 bg-white hover:bg-[#D4AF37]/5 transition-colors duration-200 group">
+                          <div className="flex items-center gap-3">
+                            <Ic className="w-5 h-5 text-[#C9A961] group-hover:text-[#D4AF37] transition-colors" />
+                            <span className="text-base font-medium text-neutral-700">{label}</span>
+                          </div>
+                          <span className="text-neutral-300 group-hover:text-[#D4AF37] transition-colors text-xl leading-none">‹</span>
+                        </button>
+                      ))}
+                    </div>
+                    <div className="flex justify-end pt-2">
+                      <Button variant="outline" onClick={() => setIsStudentManagementDialogOpen(false)} className="text-sm h-9 rounded-lg border-[#D4AF37]/50 text-neutral-600">إغلاق</Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+
+                {[
+                  { icon: Settings, label: "إدارة المعلمين", action: () => router.push("/admin/teachers") },
+                  { icon: BookOpen, label: "إدارة الحلقات", action: () => router.push("/admin/circles") },
+                  { icon: ShieldCheck, label: "إدارة الإداريين", action: () => router.push("/admin/admins") },
+                ].map(({ icon: Ic, label, action }) => (
+                  <button key={label} onClick={action} className="w-full flex items-center justify-between px-6 py-5 hover:bg-[#D4AF37]/5 transition-colors duration-200 group border-t border-[#D4AF37]/10">
+                    <div className="flex items-center gap-3">
+                      <Ic className="w-5 h-5 text-[#C9A961] group-hover:text-[#D4AF37] transition-colors" />
+                      <span className="text-base font-medium text-neutral-700">{label}</span>
+                    </div>
+                    <span className="text-neutral-300 group-hover:text-[#D4AF37] transition-colors text-xl leading-none">‹</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Communication & Administration */}
+            <div className="bg-white rounded-2xl border border-[#D4AF37]/40 shadow-sm overflow-hidden">
+              <div className="px-6 py-6 border-b border-[#D4AF37]/40 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-[#D4AF37]/10 flex items-center justify-center">
+                  <MessageSquare className="w-4 h-4 text-[#D4AF37]" />
                 </div>
-              </DialogContent>
-            </Dialog>
+                <h2 className="text-lg font-bold text-[#1a2332]">الإدارة العامة</h2>
+              </div>
+              <div className="divide-y divide-[#D4AF37]/25">
+                <Dialog open={isReportsDialogOpen} onOpenChange={setIsReportsDialogOpen}>
+                  <DialogTrigger asChild>
+                    <button onClick={(e) => { e.preventDefault(); setIsReportsDialogOpen(true) }} className="w-full flex items-center justify-between px-6 py-5 hover:bg-[#D4AF37]/5 transition-colors duration-200 group">
+                      <div className="flex items-center gap-3">
+                        <FileText className="w-5 h-5 text-[#C9A961] group-hover:text-[#D4AF37] transition-colors" />
+                        <span className="text-base font-medium text-neutral-700">التقارير</span>
+                      </div>
+                      <span className="text-neutral-300 group-hover:text-[#D4AF37] transition-colors text-xl leading-none">‹</span>
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[480px]">
+                    <DialogHeader>
+                      <DialogTitle className="text-xl text-[#1a2332]">التقارير</DialogTitle>
+                      <DialogDescription className="text-sm text-neutral-500">اختر نوع التقرير</DialogDescription>
+                    </DialogHeader>
+                    <div className="divide-y divide-[#D4AF37]/25 rounded-xl border border-[#D4AF37]/40 overflow-hidden mt-4">
+                      {[
+                        { icon: UserCheck, label: "تقارير المعلمين", action: () => { setIsReportsDialogOpen(false); router.push("/admin/teacher-attendance") } },
+                        { icon: MessageSquare, label: "تقارير الرسائل", action: () => { setIsReportsDialogOpen(false); router.push("/admin/reports") } },
+                        { icon: BookOpen, label: "السجل اليومي للطلاب", action: () => { setIsReportsDialogOpen(false); router.push("/admin/student-daily-attendance") } },
+                      ].map(({ icon: Ic, label, action }) => (
+                        <button key={label} onClick={action} className="w-full flex items-center justify-between px-5 py-5 bg-white hover:bg-[#D4AF37]/5 transition-colors duration-200 group">
+                          <div className="flex items-center gap-3">
+                            <Ic className="w-5 h-5 text-[#C9A961] group-hover:text-[#D4AF37] transition-colors" />
+                            <span className="text-base font-medium text-neutral-700">{label}</span>
+                          </div>
+                          <span className="text-neutral-300 group-hover:text-[#D4AF37] transition-colors text-xl leading-none">‹</span>
+                        </button>
+                      ))}
+                    </div>
+                    <div className="flex justify-end pt-2">
+                      <Button variant="outline" onClick={() => setIsReportsDialogOpen(false)} className="text-sm h-9 rounded-lg border-[#D4AF37]/50 text-neutral-600">إغلاق</Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
 
-            <Button
-              onClick={() => router.push("/admin/students-achievements")}
-              className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold h-16 w-full text-base"
-            >
-              <Award className="w-5 h-5 ml-2" />
-              إنجازات الطلاب
-            </Button>
+                {[
+                  { icon: MessageSquare, label: "الإرسال إلى أولياء الأمور", path: "/admin/whatsapp-send" },
+                  { icon: Map, label: "إدارة المسار", path: "/admin/pathways" },
+                ].map(({ icon: Ic, label, path }) => (
+                  <button key={label} onClick={() => router.push(path)} className="w-full flex items-center justify-between px-6 py-5 hover:bg-[#D4AF37]/5 transition-colors duration-200 group">
+                    <div className="flex items-center gap-3">
+                      <Ic className="w-5 h-5 text-[#C9A961] group-hover:text-[#D4AF37] transition-colors" />
+                      <span className="text-base font-medium text-neutral-700">{label}</span>
+                    </div>
+                    <span className="text-neutral-300 group-hover:text-[#D4AF37] transition-colors text-xl leading-none">‹</span>
+                  </button>
+                ))}
 
-            <Button
-              onClick={(e) => {
-                e.preventDefault()
-                router.push("/admin/teachers")
-              }}
-              className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold h-16 w-full text-base"
-            >
-              <Settings className="w-5 h-5 ml-2" />
-              إدارة المعلمين
-            </Button>
+                <Dialog open={isGamesManagementDialogOpen} onOpenChange={setIsGamesManagementDialogOpen}>
+                  <DialogTrigger asChild>
+                    <button onClick={(e) => { e.preventDefault(); setIsGamesManagementDialogOpen(true) }} className="w-full flex items-center justify-between px-6 py-5 hover:bg-[#D4AF37]/5 transition-colors duration-200 group">
+                      <div className="flex items-center gap-3">
+                        <Zap className="w-5 h-5 text-[#C9A961] group-hover:text-[#D4AF37] transition-colors" />
+                        <span className="text-base font-medium text-neutral-700">إدارة الألعاب</span>
+                      </div>
+                      <span className="text-neutral-300 group-hover:text-[#D4AF37] transition-colors text-xl leading-none">‹</span>
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[480px]">
+                    <DialogHeader>
+                      <DialogTitle className="text-xl text-[#1a2332]">إدارة الألعاب</DialogTitle>
+                      <DialogDescription className="text-sm text-neutral-500">اختر اللعبة التي تريد إدارتها</DialogDescription>
+                    </DialogHeader>
+                    <div className="divide-y divide-[#D4AF37]/25 rounded-xl border border-[#D4AF37]/40 overflow-hidden mt-4">
+                      {[
+                        { icon: BookOpen, label: "قاعدة أسئلة الفئات", path: "/admin/questions" },
+                        { icon: BookOpen, label: "إدارة خلية الحروف", path: "/admin/letter-hive-questions" },
+                        { icon: BookOpen, label: "قاعدة أسئلة المزاد", path: "/admin/auction-questions" },
+                        { icon: Zap, label: "إدارة التحدي اليومي", path: "/admin/daily-challenges" },
+                        { icon: Upload, label: "قاعدة صور خمن الصورة", path: "/admin/guess-images" },
+                      ].map(({ icon: Ic, label, path }) => (
+                        <button key={label} onClick={() => { setIsGamesManagementDialogOpen(false); router.push(path) }} className="w-full flex items-center justify-between px-5 py-5 bg-white hover:bg-[#D4AF37]/5 transition-colors duration-200 group">
+                          <div className="flex items-center gap-3">
+                            <Ic className="w-5 h-5 text-[#C9A961] group-hover:text-[#D4AF37] transition-colors" />
+                            <span className="text-base font-medium text-neutral-700">{label}</span>
+                          </div>
+                          <span className="text-neutral-300 group-hover:text-[#D4AF37] transition-colors text-xl leading-none">‹</span>
+                        </button>
+                      ))}
+                    </div>
+                  </DialogContent>
+                </Dialog>
 
-            <Button
-              onClick={(e) => {
-                e.preventDefault()
-                router.push("/admin/circles")
-              }}
-              className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold h-16 w-full text-base"
-            >
-              <BookOpen className="w-5 h-5 ml-2" />
-              إدارة الحلقات
-            </Button>
+                {[
+                  { icon: ShoppingBag, label: "إدارة المتجر", path: "/admin/store-management" },
+                ].map(({ icon: Ic, label, path }) => (
+                  <button key={label} onClick={() => router.push(path)} className="w-full flex items-center justify-between px-6 py-5 hover:bg-[#D4AF37]/5 transition-colors duration-200 group">
+                    <div className="flex items-center gap-3">
+                      <Ic className="w-5 h-5 text-[#C9A961] group-hover:text-[#D4AF37] transition-colors" />
+                      <span className="text-base font-medium text-neutral-700">{label}</span>
+                    </div>
+                    <span className="text-neutral-300 group-hover:text-[#D4AF37] transition-colors text-xl leading-none">‹</span>
+                  </button>
+                ))}
+              </div>
+            </div>
 
-            <Dialog open={isReportsDialogOpen} onOpenChange={setIsReportsDialogOpen}>
-              <DialogTrigger asChild>
-                <Button
-                  onClick={(e) => {
-                    e.preventDefault()
-                    setIsReportsDialogOpen(true)
-                  }}
-                  className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold h-16 w-full text-base"
-                >
-                  <FileText className="w-5 h-5 ml-2" />
-                  التقارير
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[500px]">
-                <DialogHeader>
-                  <DialogTitle className="text-2xl text-[#1a2332]">التقارير</DialogTitle>
-                  <DialogDescription className="text-base">اختر نوع التقرير</DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-6">
-                  <Button
-                    onClick={() => {
-                      setIsReportsDialogOpen(false)
-                      router.push("/admin/teacher-attendance")
-                    }}
-                    className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold h-14 text-lg"
-                  >
-                    <UserCheck className="w-5 h-5 ml-2" />
-                    تقارير المعلمين
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setIsReportsDialogOpen(false)
-                      router.push("/admin/reports")
-                    }}
-                    className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold h-14 text-lg"
-                  >
-                    <MessageSquare className="w-5 h-5 ml-2" />
-                    تقارير الرسائل
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setIsReportsDialogOpen(false)
-                      router.push("/admin/student-daily-attendance")
-                    }}
-                    className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold h-14 text-lg"
-                  >
-                    <BookOpen className="w-5 h-5 ml-2" />
-                    السجل اليومي للطلاب
-                  </Button>
-                </div>
-                <div className="flex justify-end">
-                  <Button variant="outline" onClick={() => setIsReportsDialogOpen(false)} className="font-bold">
-                    إغلاق
-                  </Button>
-                </div>
-              </DialogContent>
-            </Dialog>
+          </div>
 
-            <Dialog open={isGamesManagementDialogOpen} onOpenChange={setIsGamesManagementDialogOpen}>
-              <DialogTrigger asChild>
-                <Button
-                  onClick={(e) => {
-                    e.preventDefault()
-                    setIsGamesManagementDialogOpen(true)
-                  }}
-                  className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold h-16 w-full text-base"
-                >
-                  <Zap className="w-5 h-5 ml-2" />
-                  إدارة الألعاب
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[500px]">
-                <DialogHeader>
-                  <DialogTitle className="text-2xl text-[#1a2332]">إدارة الألعاب</DialogTitle>
-                  <DialogDescription className="text-base">اختر اللعبة التي تريد إدارتها</DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-6">
-                  <Button
-                    onClick={() => {
-                      setIsGamesManagementDialogOpen(false)
-                      router.push("/admin/questions")
-                    }}
-                    className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold h-14 text-lg"
-                  >
-                    <BookOpen className="w-5 h-5 ml-2" />
-                    قاعدة أسئلة الفئات
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setIsGamesManagementDialogOpen(false)
-                      router.push("/admin/letter-hive-questions")
-                    }}
-                    className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold h-14 text-lg"
-                  >
-                    <BookOpen className="w-5 h-5 ml-2" />
-                    إدارة خلية الحروف
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setIsGamesManagementDialogOpen(false)
-                      router.push("/admin/auction-questions")
-                    }}
-                    className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold h-14 text-lg"
-                  >
-                    <BookOpen className="w-5 h-5 ml-2" />
-                    قاعدة أسئلة المزاد
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setIsGamesManagementDialogOpen(false)
-                      router.push("/admin/daily-challenges")
-                    }}
-                    className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold h-14 text-lg"
-                  >
-                    <Zap className="w-5 h-5 ml-2" />
-                    إدارة التحدي اليومي
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setIsGamesManagementDialogOpen(false)
-                      router.push("/admin/guess-images")
-                    }}
-                    className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold h-14 text-lg"
-                  >
-                    <Upload className="w-5 h-5 ml-2" />
-                    قاعدة صور خمن الصورة
-                  </Button>
-                </div>
-              </DialogContent>
-            </Dialog>
-
-            <Button
-              onClick={(e) => {
-                e.preventDefault()
-                router.push("/admin/whatsapp-send")
-              }}
-              className="bg-gradient-to-r from-[#25D366] to-[#20BA5A] hover:from-[#20BA5A] hover:to-[#1DA851] text-white font-bold h-16 w-full text-base"
-            >
-              <MessageSquare className="w-5 h-5 ml-2" />
-              الإرسال إلى أولياء الأمور
-            </Button>
-
-            <Button
-              onClick={(e) => {
-                e.preventDefault()
-                router.push("/admin/pathways")
-              }}
-              className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold h-16 w-full text-base"
-            >
-              <Map className="w-5 h-5 ml-2" />
-              إدارة المسار
-            </Button>
-
-            <Button
-              onClick={(e) => {
-                e.preventDefault()
-                router.push("/admin/admins")
-              }}
-              className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold h-16 w-full text-base"
-            >
-              <ShieldCheck className="w-5 h-5 ml-2" />
-              إدارة الإداريين
-            </Button>
-            
-            <Button
-              onClick={() => router.push("/admin/store-management")}
-              className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold h-16 w-full text-base"
-            >
-              <ShoppingBag className="w-5 h-5 ml-2" />
-              إدارة المتجر
-            </Button>
-
-            <Dialog open={isEditPointsDialogOpen} onOpenChange={setIsEditPointsDialogOpen}>
+          {/* Edit Points Dialog - programmatic only */}
+          <Dialog open={isEditPointsDialogOpen} onOpenChange={setIsEditPointsDialogOpen}>
               <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                  <DialogTitle className="text-2xl text-[#1a2332]">تعديل نقاط الطالب</DialogTitle>
-                  <DialogDescription className="text-base">اختر الحلقة والطالب لتعديل نقاطه</DialogDescription>
+                  <DialogTitle className="text-xl text-[#1a2332]">تعديل نقاط الطالب</DialogTitle>
+                  <DialogDescription className="text-sm text-neutral-500">اختر الحلقة والطالب لتعديل نقاطه</DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
                   <div className="space-y-2">
-                    <Label htmlFor="pointsCircleSelect" className="text-base font-semibold text-[#1a2332]">
+                    <Label htmlFor="pointsCircleSelect" className="text-sm font-semibold text-[#1a2332]">
                       اختر الحلقة
                     </Label>
                     <Select
@@ -1202,7 +1054,7 @@ export default function AdminDashboard() {
                         setNewPoints("")
                       }}
                     >
-                      <SelectTrigger className="w-full text-base">
+                      <SelectTrigger className="w-full text-sm">
                         <SelectValue placeholder="اختر الحلقة" />
                       </SelectTrigger>
                       <SelectContent>
@@ -1215,7 +1067,7 @@ export default function AdminDashboard() {
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="pointsStudentSelect" className="text-base font-semibold text-[#1a2332]">
+                    <Label htmlFor="pointsStudentSelect" className="text-sm font-semibold text-[#1a2332]">
                       اختر الطالب
                     </Label>
                     <Select
@@ -1223,7 +1075,7 @@ export default function AdminDashboard() {
                       onValueChange={handleSelectStudentForPoints}
                       disabled={!selectedCircleForPoints}
                     >
-                      <SelectTrigger className="w-full text-base">
+                      <SelectTrigger className="w-full text-sm">
                         <SelectValue placeholder={selectedCircleForPoints ? "اختر الطالب" : "اختر الحلقة أولاً"} />
                       </SelectTrigger>
                       <SelectContent>
@@ -1231,13 +1083,14 @@ export default function AdminDashboard() {
                           <SelectItem key={student.id} value={student.id}>
                             {student.name} - النقاط الحالية: {student.points || 0}
                           </SelectItem>
+
                         ))}
                       </SelectContent>
                     </Select>
                   </div>
                   {editingStudentPoints && (
                     <div className="space-y-2">
-                      <Label htmlFor="newPoints" className="text-base font-semibold text-[#1a2332]">
+                      <Label htmlFor="newPoints" className="text-sm font-semibold text-[#1a2332]">
                         النقاط الجديدة
                       </Label>
                       <div className="flex items-center gap-2">
@@ -1248,30 +1101,22 @@ export default function AdminDashboard() {
                           value={newPoints}
                           onChange={(e) => setNewPoints(e.target.value)}
                           placeholder="أدخل النقاط الجديدة"
-                          className="text-base w-24 text-center"
+                          className="text-sm w-24 text-center"
                           min="0"
                         />
                         <Button type="button" variant="outline" onClick={() => setNewPoints((prev) => (Number(prev) + 10).toString())}>+</Button>
                       </div>
-                      <p className="text-sm text-gray-500">النقاط الحالية: {editingStudentPoints.points || 0}</p>
+                      <p className="text-xs text-neutral-400">النقاط الحالية: {editingStudentPoints.points || 0}</p>
                     </div>
                   )}
                 </div>
-                <div className="flex justify-end gap-3">
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      setIsEditPointsDialogOpen(false)
-                      setEditingStudentPoints(null)
-                      setNewPoints("")
-                    }}
-                    className="font-bold"
-                  >
+                <div className="flex justify-end gap-2">
+                  <Button variant="outline" onClick={() => { setIsEditPointsDialogOpen(false); setEditingStudentPoints(null); setNewPoints("") }} className="text-sm h-9 rounded-lg border-[#D4AF37]/50 text-neutral-600">
                     إلغاء
                   </Button>
                   <Button
                     onClick={handleSavePoints}
-                    className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold"
+                    className="bg-[#1a2332] hover:bg-[#243040] text-white text-sm h-9 rounded-lg font-medium"
                     disabled={!editingStudentPoints || !newPoints || isSubmitting}
                   >
                     {isSubmitting ? "جاري الحفظ..." : "حفظ النقاط"}
@@ -1280,17 +1125,15 @@ export default function AdminDashboard() {
               </DialogContent>
             </Dialog>
 
-          </div>
-
           <Dialog open={isAddStudentDialogOpen} onOpenChange={setIsAddStudentDialogOpen}>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
-                <DialogTitle className="text-2xl text-[#1a2332]">إضافة طالب جديد</DialogTitle>
-                <DialogDescription className="text-base">أدخل معلومات الطالب واختر الحلقة</DialogDescription>
+                <DialogTitle className="text-xl text-[#1a2332]">إضافة طالب جديد</DialogTitle>
+                <DialogDescription className="text-sm text-neutral-500">أدخل معلومات الطالب واختر الحلقة</DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <div className="space-y-2">
-                  <Label htmlFor="studentName" className="text-base font-semibold text-[#1a2332]">
+                  <Label htmlFor="studentName" className="text-sm font-medium text-neutral-600">
                     اسم الطالب
                   </Label>
                   <Input
@@ -1298,11 +1141,11 @@ export default function AdminDashboard() {
                     value={newStudentName}
                     onChange={(e) => setNewStudentName(e.target.value)}
                     placeholder="أدخل اسم الطالب"
-                    className="text-base"
+                    className="text-sm"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="studentAccountNumber" className="text-base font-semibold text-[#1a2332]">
+                  <Label htmlFor="studentAccountNumber" className="text-sm font-medium text-neutral-600">
                     رقم الحساب
                   </Label>
                   <Input
@@ -1310,13 +1153,13 @@ export default function AdminDashboard() {
                     value={newStudentAccountNumber}
                     onChange={(e) => setNewStudentAccountNumber(e.target.value)}
                     placeholder="أدخل رقم الحساب"
-                    className="text-base"
+                    className="text-sm"
                     dir="ltr"
                     type="number"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="studentIdNumber" className="text-base font-semibold text-[#1a2332]">
+                  <Label htmlFor="studentIdNumber" className="text-sm font-medium text-neutral-600">
                     رقم الهوية
                   </Label>
                   <Input
@@ -1324,11 +1167,11 @@ export default function AdminDashboard() {
                     value={newStudentIdNumber}
                     onChange={(e) => setNewStudentIdNumber(e.target.value)}
                     placeholder="أدخل رقم الهوية"
-                    className="text-base"
+                    className="text-sm"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="guardianPhoneNumber" className="text-base font-semibold text-[#1a2332]">
+                  <Label htmlFor="guardianPhoneNumber" className="text-sm font-medium text-neutral-600">
                     رقم جوال ولي الأمر
                   </Label>
                   <Input
@@ -1336,14 +1179,14 @@ export default function AdminDashboard() {
                     value={newGuardianPhone}
                     onChange={(e) => setNewGuardianPhone(e.target.value)}
                     placeholder="966501234567"
-                    className="text-base"
+                    className="text-sm"
                     dir="ltr"
                     type="tel"
                   />
                   <p className="text-xs text-gray-500">مثال: 966501234567</p>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="circleSelect" className="text-base font-semibold text-[#1a2332]">
+                  <Label htmlFor="circleSelect" className="text-sm font-medium text-neutral-600">
                     اختر الحلقة
                   </Label>
                   <Select value={selectedCircleToAdd} onValueChange={setSelectedCircleToAdd}>
@@ -1360,13 +1203,13 @@ export default function AdminDashboard() {
                   </Select>
                 </div>
               </div>
-              <div className="flex justify-end gap-3">
-                <Button variant="outline" onClick={() => setIsAddStudentDialogOpen(false)} className="font-bold">
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" onClick={() => setIsAddStudentDialogOpen(false)} className="text-sm h-9 rounded-lg border-[#D4AF37]/50 text-neutral-600">
                   إلغاء
                 </Button>
                 <Button
                   onClick={handleAddStudent}
-                  className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold"
+                  className="border border-[#D4AF37]/50 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 text-[#C9A961] hover:text-[#D4AF37] text-sm h-9 rounded-lg font-medium"
                   disabled={
                     !newStudentName.trim() ||
                     !newStudentIdNumber.trim() ||
@@ -1383,12 +1226,12 @@ export default function AdminDashboard() {
           <Dialog open={isRemoveStudentDialogOpen} onOpenChange={setIsRemoveStudentDialogOpen}>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
-                <DialogTitle className="text-2xl text-[#1a2332]">إزالة طالب</DialogTitle>
-                <DialogDescription className="text-base">اختر الحلقة ثم اختر الطالب المراد إزالته</DialogDescription>
+                <DialogTitle className="text-xl text-[#1a2332]">إزالة طالب</DialogTitle>
+                <DialogDescription className="text-sm text-neutral-500">اختر الحلقة ثم اختر الطالب المراد إزالته</DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <div className="space-y-2">
-                  <Label htmlFor="removeCircleSelect" className="text-base font-semibold text-[#1a2332]">
+                  <Label htmlFor="removeCircleSelect" className="text-sm font-medium text-neutral-600">
                     اختر الحلقة
                   </Label>
                   <Select
@@ -1398,7 +1241,7 @@ export default function AdminDashboard() {
                       setSelectedStudentToRemove("")
                     }}
                   >
-                    <SelectTrigger className="w-full text-base">
+                    <SelectTrigger className="w-full text-sm">
                       <SelectValue placeholder="اختر الحلقة" />
                     </SelectTrigger>
                     <SelectContent>
@@ -1411,7 +1254,7 @@ export default function AdminDashboard() {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="removeStudentSelect" className="text-base font-semibold text-[#1a2332]">
+                  <Label htmlFor="removeStudentSelect" className="text-sm font-semibold text-[#1a2332]">
                     اختر الطالب
                   </Label>
                   <Select
@@ -1419,7 +1262,7 @@ export default function AdminDashboard() {
                     onValueChange={setSelectedStudentToRemove}
                     disabled={!selectedCircleToRemove}
                   >
-                    <SelectTrigger className="w-full text-base">
+                    <SelectTrigger className="w-full text-sm">
                       <SelectValue placeholder={selectedCircleToRemove ? "اختر الطالب" : "اختر الحلقة أولاً"} />
                     </SelectTrigger>
                     <SelectContent>
@@ -1432,21 +1275,17 @@ export default function AdminDashboard() {
                   </Select>
                 </div>
               </div>
-              <div className="flex justify-end gap-3">
+              <div className="flex justify-end gap-2">
                 <Button
                   variant="outline"
-                  onClick={() => {
-                    setIsRemoveStudentDialogOpen(false)
-                    setSelectedCircleToRemove("")
-                    setSelectedStudentToRemove("")
-                  }}
-                  className="font-bold"
+                  onClick={() => { setIsRemoveStudentDialogOpen(false); setSelectedCircleToRemove(""); setSelectedStudentToRemove("") }}
+                  className="text-sm h-9 rounded-lg border-[#D4AF37]/50 text-neutral-600"
                 >
                   إلغاء
                 </Button>
                 <Button
                   onClick={handleRemoveStudent}
-                  className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold"
+                  className="bg-red-600 hover:bg-red-700 text-white text-sm h-9 rounded-lg font-medium"
                   disabled={!selectedStudentToRemove || !selectedCircleToRemove || isSubmitting}
                 >
                   {isSubmitting ? "جاري الإزالة..." : "إزالة"}
@@ -1458,12 +1297,12 @@ export default function AdminDashboard() {
           <Dialog open={isEditStudentDialogOpen} onOpenChange={setIsEditStudentDialogOpen}>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
-                <DialogTitle className="text-2xl text-[#1a2332]">تعديل بيانات الطالب</DialogTitle>
-                <DialogDescription className="text-base">اختر الحلقة والطالب لتعديل معلوماته</DialogDescription>
+                <DialogTitle className="text-xl text-[#1a2332]">تعديل بيانات الطالب</DialogTitle>
+                <DialogDescription className="text-sm text-neutral-500">اختر الحلقة والطالب لتعديل معلوماته</DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <div className="space-y-2">
-                  <Label htmlFor="editCircleSelect" className="text-base font-semibold text-[#1a2332]">
+                  <Label htmlFor="editCircleSelect" className="text-sm font-medium text-neutral-600">
                     اختر الحلقة
                   </Label>
                   <Select
@@ -1487,7 +1326,7 @@ export default function AdminDashboard() {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="editStudentSelect" className="text-base font-semibold text-[#1a2332]">
+                  <Label htmlFor="editStudentSelect" className="text-sm font-medium text-neutral-600">
                     اختر الطالب
                   </Label>
                   <Select
@@ -1510,7 +1349,7 @@ export default function AdminDashboard() {
                 {editingStudent && (
                   <>
                     <div className="space-y-2">
-                      <Label htmlFor="editStudentIdNum" className="text-base font-semibold text-[#1a2332]">
+                      <Label htmlFor="editStudentIdNum" className="text-sm font-medium text-neutral-600">
                         رقم الهوية
                       </Label>
                       <Input
@@ -1518,12 +1357,12 @@ export default function AdminDashboard() {
                         value={editStudentIdNumber}
                         onChange={(e) => setEditStudentIdNumber(e.target.value)}
                         placeholder="أدخل رقم الهوية"
-                        className="text-base"
+                        className="text-sm"
                         dir="ltr"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="editGuardianPhone" className="text-base font-semibold text-[#1a2332]">
+                      <Label htmlFor="editGuardianPhone" className="text-sm font-medium text-neutral-600">
                         رقم جوال ولي الأمر
                       </Label>
                       <Input
@@ -1531,7 +1370,7 @@ export default function AdminDashboard() {
                         value={editGuardianPhone}
                         onChange={(e) => setEditGuardianPhone(e.target.value)}
                         placeholder="966501234567"
-                        className="text-base"
+                        className="text-sm"
                         dir="ltr"
                       />
                       <p className="text-xs text-gray-500">مثال: 966501234567</p>
@@ -1539,20 +1378,17 @@ export default function AdminDashboard() {
                   </>
                 )}
               </div>
-              <div className="flex justify-end gap-3">
+              <div className="flex justify-end gap-2">
                 <Button
                   variant="outline"
-                  onClick={() => {
-                    setIsEditStudentDialogOpen(false)
-                    setEditingStudent(null)
-                  }}
-                  className="font-bold"
+                  onClick={() => { setIsEditStudentDialogOpen(false); setEditingStudent(null) }}
+                  className="text-sm h-9 rounded-lg border-[#D4AF37]/50 text-neutral-600"
                 >
                   إلغاء
                 </Button>
                 <Button
                   onClick={handleSaveStudentEdit}
-                  className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#023232] font-bold"
+                  className="border border-[#D4AF37]/50 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 text-[#C9A961] hover:text-[#D4AF37] text-sm h-9 rounded-lg font-medium"
                   disabled={!editingStudent || isSubmitting}
                 >
                   {isSubmitting ? "جاري الحفظ..." : "حفظ التعديلات"}
@@ -1564,14 +1400,14 @@ export default function AdminDashboard() {
           <Dialog open={isStudentRecordsDialogOpen} onOpenChange={setIsStudentRecordsDialogOpen}>
             <DialogContent className="sm:max-w-[800px] max-h-[80vh] overflow-y-auto">
               <DialogHeader>
-                <DialogTitle className="text-2xl text-[#1a2332]">سجلات الطلاب</DialogTitle>
-                <DialogDescription className="text-base">
+                <DialogTitle className="text-xl text-[#1a2332]">سجلات الطلاب</DialogTitle>
+                <DialogDescription className="text-sm text-neutral-500">
                   اختر الحلقة والطالب لعرض سجلات الحضور والتقييم
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <div className="space-y-2">
-                  <Label htmlFor="recordsCircleSelect" className="text-base font-semibold text-[#1a2332]">
+                  <Label htmlFor="recordsCircleSelect" className="text-sm font-medium text-neutral-600">
                     اختر الحلقة
                   </Label>
                   <Select
@@ -1596,7 +1432,7 @@ export default function AdminDashboard() {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="recordsStudentSelect" className="text-base font-semibold text-[#1a2332]">
+                  <Label htmlFor="recordsStudentSelect" className="text-sm font-medium text-neutral-600">
                     اختر الطالب
                   </Label>
                   <Select
@@ -1619,11 +1455,11 @@ export default function AdminDashboard() {
 
                 {selectedStudentForRecords && (
                   <div className="mt-6">
-                    <h3 className="text-xl font-bold text-[#1a2332] mb-4">سجلات الطالب: {selectedStudentName}</h3>
+                    <h3 className="text-sm font-medium text-neutral-600 mb-4">سجلات الطالب: {selectedStudentName}</h3>
                     {isLoadingRecords ? (
-                      <div className="text-center py-8 text-[#1a2332]">جاري تحميل السجلات...</div>
+                      <div className="text-center py-8 text-neutral-400 text-sm">جاري تحميل السجلات...</div>
                     ) : studentRecords.length === 0 ? (
-                      <div className="text-center py-8 text-[#1a2332]/60">لا توجد سجلات حضور لهذا الطالب</div>
+                      <div className="text-center py-8 text-neutral-400 text-sm">لا توجد سجلات حضور لهذا الطالب</div>
                     ) : (
                       <Table>
                         <TableHeader>
@@ -1676,13 +1512,8 @@ export default function AdminDashboard() {
               <div className="flex justify-end">
                 <Button
                   variant="outline"
-                  onClick={() => {
-                    setIsStudentRecordsDialogOpen(false)
-                    setSelectedCircleForRecords("")
-                    setSelectedStudentForRecords("")
-                    setStudentRecords([])
-                  }}
-                  className="font-bold"
+                  onClick={() => { setIsStudentRecordsDialogOpen(false); setSelectedCircleForRecords(""); setSelectedStudentForRecords(""); setStudentRecords([]) }}
+                  className="text-sm h-9 rounded-lg border-[#D4AF37]/50 text-neutral-600"
                 >
                   إغلاق
                 </Button>
