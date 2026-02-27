@@ -4,7 +4,6 @@ import { useEffect, useState } from "react"
 import { useRouter } from 'next/navigation'
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -17,8 +16,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { UserPlus, Trash2, ArrowRight } from 'lucide-react'
-import { Badge } from "@/components/ui/badge"
+import { UserPlus, Trash2, ArrowRight, Settings, Users, User, Edit2 } from 'lucide-react'
 import { useConfirmDialog } from "@/hooks/use-confirm-dialog"
 import { useAlertDialog } from "@/hooks/use-confirm-dialog"
 
@@ -208,164 +206,99 @@ export default function TeacherManagement() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-2xl text-[#1a2332]">جاري التحميل...</div>
+      <div className="min-h-screen flex items-center justify-center bg-[#fafaf9]">
+        <div className="w-10 h-10 rounded-full border-2 border-[#D4AF37] border-t-transparent animate-spin" />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#f5f1e8] to-white">
+    <div className="min-h-screen flex flex-col bg-[#fafaf9]" dir="rtl">
       <Header />
 
-      <main className="flex-1 py-6 md:py-12 px-3 md:px-4">
-        <div className="container mx-auto max-w-7xl">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-4 md:mb-8 gap-3">
-            <div className="flex items-center gap-2 md:gap-4 w-full md:w-auto">
-              <Button onClick={() => router.back()} variant="outline" size="sm" className="md:h-auto">
-                <ArrowRight className="w-4 md:w-5 h-4 md:h-5 ml-1 md:ml-2" />
-              </Button>
-              <div>
-                <h1 className="text-2xl md:text-4xl font-bold text-[#1a2332]">إدارة المعلمين</h1>
-                <p className="text-sm md:text-lg text-[#1a2332]/70 mt-0.5 md:mt-1">إضافة وإدارة معلمي الحلقات</p>
+      <main className="flex-1 py-10 px-4">
+        <div className="container mx-auto max-w-4xl space-y-8">
+
+          {/* Page Header */}
+          <div className="flex items-center justify-between border-b border-[#D4AF37]/40 pb-6">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => router.back()}
+                className="w-9 h-9 rounded-lg border border-[#D4AF37]/40 flex items-center justify-center text-[#C9A961] hover:bg-[#D4AF37]/10 transition-colors"
+              >
+                <ArrowRight className="w-4 h-4" />
+              </button>
+              <div className="w-10 h-10 rounded-xl bg-[#D4AF37]/10 border border-[#D4AF37]/40 flex items-center justify-center">
+                <Settings className="w-5 h-5 text-[#D4AF37]" />
               </div>
+              <h1 className="text-2xl font-bold text-[#1a2332]">إدارة المعلمين</h1>
             </div>
+
+            {/* Add Teacher Dialog */}
             <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
               <DialogTrigger asChild>
-                <Button className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#00312e] font-bold text-sm md:text-lg py-4 md:py-6 px-4 md:px-8 w-full md:w-auto">
-                  <UserPlus className="w-4 md:w-6 h-4 md:h-6 ml-1 md:ml-2" />
+                <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#D4AF37]/50 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 text-[#C9A961] hover:text-[#D4AF37] text-sm font-semibold transition-colors">
+                  <UserPlus className="w-4 h-4" />
                   إضافة معلم
-                </Button>
+                </button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[500px]">
+              <DialogContent className="sm:max-w-[480px]">
                 <DialogHeader>
-                  <DialogTitle className="text-2xl text-[#1a2332]">إضافة معلم جديد</DialogTitle>
-                  <DialogDescription className="text-base">أضف معلماً جديداً إلى النظام</DialogDescription>
+                  <DialogTitle className="text-xl text-[#1a2332]">إضافة معلم جديد</DialogTitle>
+                  <DialogDescription className="text-sm text-neutral-500">أضف معلماً جديداً إلى النظام</DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
                   <div className="space-y-2">
-                    <Label htmlFor="teacherName" className="text-base font-semibold text-[#1a2332]">
-                      اسم المعلم
-                    </Label>
-                    <Input
-                      id="teacherName"
-                      value={newTeacherName}
-                      onChange={(e) => setNewTeacherName(e.target.value)}
-                      placeholder="أدخل اسم المعلم"
-                      className="text-base"
-                    />
+                    <Label htmlFor="teacherName" className="text-sm font-semibold text-[#1a2332]">اسم المعلم</Label>
+                    <Input id="teacherName" value={newTeacherName} onChange={(e) => setNewTeacherName(e.target.value)} placeholder="أدخل اسم المعلم" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="teacherAccountNumber" className="text-base font-semibold text-[#1a2332]">
-                      رقم الحساب
-                    </Label>
-                    <Input
-                      id="teacherAccountNumber"
-                      value={newTeacherAccountNumber}
-                      onChange={(e) => setNewTeacherAccountNumber(e.target.value)}
-                      placeholder="أدخل رقم الحساب"
-                      className="text-base"
-                      dir="ltr"
-                      type="number"
-                    />
+                    <Label htmlFor="teacherAccountNumber" className="text-sm font-semibold text-[#1a2332]">رقم الحساب</Label>
+                    <Input id="teacherAccountNumber" value={newTeacherAccountNumber} onChange={(e) => setNewTeacherAccountNumber(e.target.value)} placeholder="أدخل رقم الحساب" dir="ltr" type="number" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="teacherIdNumber" className="text-base font-semibold text-[#1a2332]">
-                      رقم الهوية
-                    </Label>
-                    <Input
-                      id="teacherIdNumber"
-                      value={newTeacherIdNumber}
-                      onChange={(e) => setNewTeacherIdNumber(e.target.value)}
-                      placeholder="أدخل رقم الهوية"
-                      className="text-base"
-                      dir="ltr"
-                    />
+                    <Label htmlFor="teacherIdNumber" className="text-sm font-semibold text-[#1a2332]">رقم الهوية</Label>
+                    <Input id="teacherIdNumber" value={newTeacherIdNumber} onChange={(e) => setNewTeacherIdNumber(e.target.value)} placeholder="أدخل رقم الهوية" dir="ltr" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="halaqah" className="text-base font-semibold text-[#1a2332]">
-                      اختر الحلقة
-                    </Label>
+                    <Label htmlFor="halaqah" className="text-sm font-semibold text-[#1a2332]">اختر الحلقة</Label>
                     <Select value={selectedHalaqah} onValueChange={setSelectedHalaqah}>
-                      <SelectTrigger className="text-base">
-                        <SelectValue placeholder="اختر الحلقة" />
-                      </SelectTrigger>
+                      <SelectTrigger><SelectValue placeholder="اختر الحلقة" /></SelectTrigger>
                       <SelectContent>
                         {circles.map((circle) => (
-                          <SelectItem key={circle.id} value={circle.name}>
-                            {circle.name}
-                          </SelectItem>
+                          <SelectItem key={circle.id} value={circle.name}>{circle.name}</SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
                 <div className="flex justify-end gap-3">
-                  <Button variant="outline" onClick={() => setIsAddDialogOpen(false)} className="font-bold">
-                    إلغاء
-                  </Button>
-                  <Button
-                    onClick={handleAddTeacher}
-                    className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#00312e] font-bold"
-                  >
-                    حفظ
-                  </Button>
+                  <Button variant="outline" onClick={() => setIsAddDialogOpen(false)} className="border-[#D4AF37]/50 text-neutral-600">إلغاء</Button>
+                  <Button onClick={handleAddTeacher} className="border border-[#D4AF37]/50 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 text-[#C9A961] hover:text-[#D4AF37]">حفظ</Button>
                 </div>
               </DialogContent>
             </Dialog>
+
+            {/* Edit Dialog (no trigger, opened programmatically) */}
             <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-              <DialogContent className="sm:max-w-[500px]">
+              <DialogContent className="sm:max-w-[480px]">
                 <DialogHeader>
-                  <DialogTitle className="text-2xl text-[#1a2332]">تعديل معلومات المعلم</DialogTitle>
-                  <DialogDescription className="text-base">
-                    تعديل رقم الهوية ورقم الجوال للمعلم {editingTeacher?.name}
-                  </DialogDescription>
+                  <DialogTitle className="text-xl text-[#1a2332]">تعديل معلومات المعلم</DialogTitle>
+                  <DialogDescription className="text-sm text-neutral-500">تعديل رقم الهوية ورقم الجوال للمعلم {editingTeacher?.name}</DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
                   <div className="space-y-2">
-                    <Label htmlFor="editIdNumber" className="text-base font-semibold text-[#1a2332]">
-                      رقم الهوية
-                    </Label>
-                    <Input
-                      id="editIdNumber"
-                      value={editIdNumber}
-                      onChange={(e) => setEditIdNumber(e.target.value)}
-                      placeholder="أدخل رقم الهوية"
-                      className="text-base"
-                      dir="ltr"
-                    />
+                    <Label htmlFor="editIdNumber" className="text-sm font-semibold text-[#1a2332]">رقم الهوية</Label>
+                    <Input id="editIdNumber" value={editIdNumber} onChange={(e) => setEditIdNumber(e.target.value)} placeholder="أدخل رقم الهوية" dir="ltr" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="editPhoneNumber" className="text-base font-semibold text-[#1a2332]">
-                      رقم الجوال
-                    </Label>
-                    <Input
-                      id="editPhoneNumber"
-                      value={editPhoneNumber}
-                      onChange={(e) => setEditPhoneNumber(e.target.value)}
-                      placeholder="أدخل رقم الجوال"
-                      className="text-base"
-                      dir="ltr"
-                    />
+                    <Label htmlFor="editPhoneNumber" className="text-sm font-semibold text-[#1a2332]">رقم الجوال</Label>
+                    <Input id="editPhoneNumber" value={editPhoneNumber} onChange={(e) => setEditPhoneNumber(e.target.value)} placeholder="أدخل رقم الجوال" dir="ltr" />
                   </div>
                 </div>
                 <div className="flex justify-end gap-3">
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      setIsEditDialogOpen(false)
-                      setEditingTeacher(null)
-                    }}
-                    className="font-bold"
-                  >
-                    إلغاء
-                  </Button>
-                  <Button
-                    onClick={handleSaveEdit}
-                    className="bg-gradient-to-r from-[#D4AF37] to-[#C9A961] hover:from-[#C9A961] hover:to-[#BFA050] text-[#00312e] font-bold"
-                  >
-                    حفظ التعديلات
-                  </Button>
+                  <Button variant="outline" onClick={() => { setIsEditDialogOpen(false); setEditingTeacher(null) }} className="border-[#D4AF37]/50 text-neutral-600">إلغاء</Button>
+                  <Button onClick={handleSaveEdit} className="border border-[#D4AF37]/50 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 text-[#C9A961] hover:text-[#D4AF37]">حفظ التعديلات</Button>
                 </div>
               </DialogContent>
             </Dialog>
@@ -373,76 +306,63 @@ export default function TeacherManagement() {
 
           {/* Teachers List */}
           {isLoadingData ? (
-            <Card className="border-2 border-[#35A4C7]/20 shadow-lg">
-              <CardContent className="pt-6">
-                <div className="text-center py-12">
-                  <p className="text-xl text-[#1a2332]/60">جاري تحميل المعلمين...</p>
-                </div>
-              </CardContent>
-            </Card>
+            <div className="flex justify-center py-20">
+              <div className="w-8 h-8 rounded-full border-2 border-[#D4AF37] border-t-transparent animate-spin" />
+            </div>
+          ) : teachers.length === 0 ? (
+            <div className="bg-white rounded-2xl border border-[#D4AF37]/40 shadow-sm p-16 text-center">
+              <div className="w-14 h-14 rounded-2xl bg-[#D4AF37]/10 border border-[#D4AF37]/30 flex items-center justify-center mx-auto mb-4">
+                <Settings className="w-7 h-7 text-[#D4AF37]" />
+              </div>
+              <p className="text-lg font-semibold text-neutral-500">لا يوجد معلمون حالياً</p>
+              <p className="text-sm text-neutral-400 mt-1">قم بإضافة معلم جديد للبدء</p>
+            </div>
           ) : (
-            <div className="space-y-3 md:space-y-4">
-              {teachers.map((teacher) => (
-                <Card
-                  key={teacher.id}
-                  className="border-2 border-[#35A4C7]/20 shadow-lg hover:shadow-xl transition-shadow"
-                >
-                  <CardContent className="pt-3 md:pt-6 p-3 md:p-6">
-                    <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 md:gap-6">
-                      <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 w-full">
-                        <div className="space-y-1 md:space-y-2">
-                          <label className="text-xs md:text-sm font-semibold text-[#1a2332]/70">اسم المعلم</label>
-                          <div className="text-base md:text-xl font-bold text-[#1a2332]">{teacher.name}</div>
+            <div className="bg-white rounded-2xl border border-[#D4AF37]/40 shadow-sm overflow-hidden">
+              <div className="px-6 py-5 border-b border-[#D4AF37]/40 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-[#D4AF37]/10 border border-[#D4AF37]/30 flex items-center justify-center">
+                  <Users className="w-4 h-4 text-[#D4AF37]" />
+                </div>
+                <h2 className="text-base font-bold text-[#1a2332]">قائمة المعلمين</h2>
+                <span className="mr-auto text-sm text-neutral-400">{teachers.length} معلم</span>
+              </div>
+              <div className="divide-y divide-[#D4AF37]/20">
+                {teachers.map((teacher) => (
+                  <div key={teacher.id} className="px-6 py-5 hover:bg-[#D4AF37]/3 transition-colors">
+                    <div className="flex items-center justify-between gap-4">
+                      {/* Avatar + Name */}
+                      <div className="flex items-center gap-4 min-w-0">
+                        <div className="w-11 h-11 rounded-full bg-[#D4AF37]/15 border border-[#D4AF37]/40 flex items-center justify-center shrink-0">
+                          <User className="w-5 h-5 text-[#D4AF37]" />
                         </div>
-                        <div className="space-y-1 md:space-y-2">
-                          <label className="text-xs md:text-sm font-semibold text-[#1a2332]/70">رقم الحساب</label>
-                          <div className="text-sm md:text-lg font-bold text-[#d8a355]">{teacher.accountNumber}</div>
-                        </div>
-                        <div className="space-y-1 md:space-y-2">
-                          <Badge className="bg-white border-2 border-[#d8a355]/30 text-[#1a2332] text-xs md:text-base px-2 md:px-3 py-0.5 md:py-1">
-                            {teacher.halaqah}
-                          </Badge>
-                        </div>
-                        <div className="space-y-1 md:space-y-2">
-                          <label className="text-xs md:text-sm font-semibold text-[#1a2332]/70">عدد الطلاب</label>
-                          <div className="text-sm md:text-lg font-bold text-[#1a2332]">{teacher.studentCount}</div>
+                        <div className="min-w-0">
+                          <p className="text-base font-bold text-[#1a2332] truncate">{teacher.name}</p>
+                          <p className="text-xs text-neutral-400 mt-0.5">{teacher.halaqah}</p>
                         </div>
                       </div>
-                      <div className="flex gap-2 md:gap-3 w-full md:w-auto">
-                        <Button
+
+                      {/* Actions */}
+                      <div className="flex items-center gap-2 shrink-0">
+                        <button
                           onClick={() => handleEditTeacher(teacher)}
-                          variant="outline"
-                          size="sm"
-                          className="border-2 border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37]/10 font-bold text-xs md:text-base flex-1 md:flex-none"
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#D4AF37]/50 text-[#C9A961] hover:bg-[#D4AF37]/10 hover:text-[#D4AF37] text-sm font-medium transition-colors"
                         >
+                          <Edit2 className="w-3.5 h-3.5" />
                           تعديل
-                        </Button>
-                        <Button
+                        </button>
+                        <button
                           onClick={() => handleRemoveTeacher(teacher.id, teacher.name)}
-                          variant="outline"
-                          size="sm"
-                          className="border-2 border-red-500 text-red-600 hover:bg-red-50 font-bold text-xs md:text-base flex-1 md:flex-none"
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-red-200 text-red-400 hover:bg-red-50 hover:text-red-600 hover:border-red-300 text-sm font-medium transition-colors"
                         >
-                          <Trash2 className="w-4 md:w-5 h-4 md:h-5 ml-1 md:ml-2" />
+                          <Trash2 className="w-3.5 h-3.5" />
                           إزالة
-                        </Button>
+                        </button>
                       </div>
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
+                  </div>
+                ))}
+              </div>
             </div>
-          )}
-
-          {!isLoadingData && teachers.length === 0 && (
-            <Card className="border-2 border-[#35A4C7]/20 shadow-lg">
-              <CardContent className="pt-6">
-                <div className="text-center py-12">
-                  <p className="text-xl text-[#1a2332]/60">لا يوجد معلمين حالياً</p>
-                  <p className="text-base text-[#1a2332]/40 mt-2">قم بإضافة معلم جديد للبدء</p>
-                </div>
-              </CardContent>
-            </Card>
           )}
         </div>
       </main>
