@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -26,38 +26,23 @@ function LevelBadge({ level }: { level: string | null | undefined }) {
   const label = translateLevel(level);
   if (!label) return <span className="text-gray-300">—</span>;
   const colors: Record<string, string> = {
-    "ممتاز": "bg-emerald-50 text-emerald-700 border border-emerald-200",
-    "جيد جدًا": "bg-blue-50 text-blue-700 border border-blue-200",
-    "جيد": "bg-amber-50 text-amber-700 border border-amber-200",
-    "لم يكمل": "bg-red-50 text-red-500 border border-red-200",
+    "ممتاز": "text-emerald-600",
+    "جيد جدًا": "text-blue-600",
+    "جيد": "text-amber-600",
+    "لم يكمل": "text-red-500",
   };
   return (
-    <span className={`inline-block px-2 py-0.5 rounded-md text-sm font-medium transition-all ${colors[label] ?? "text-gray-500"}`}>
+    <span className={`text-base font-semibold ${colors[label] ?? "text-gray-500"}`}>
       {label}
     </span>
   );
 }
 
 function StatusBadge({ status }: { status: string | null }) {
-  if (status === "present") return (
-    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-sm font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 transition-all">
-      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
-      حاضر
-    </span>
-  );
-  if (status === "excused") return (
-    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-sm font-semibold bg-amber-50 text-amber-700 border border-amber-200 transition-all">
-      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block" />
-      مستأذن
-    </span>
-  );
-  if (status === "absent") return (
-    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-sm font-semibold bg-red-50 text-red-600 border border-red-200 transition-all">
-      <span className="w-1.5 h-1.5 rounded-full bg-red-500 inline-block" />
-      غائب
-    </span>
-  );
-  return <span className="text-gray-400 text-sm">—</span>;
+  if (status === "present") return <span className="text-base font-semibold text-emerald-600">حاضر</span>;
+  if (status === "excused") return <span className="text-base font-semibold text-amber-600">مستأذن</span>;
+  if (status === "absent") return <span className="text-base font-semibold text-red-500">غائب</span>;
+  return <span className="text-gray-400 text-base">—</span>;
 }
 
 interface AttendanceRecord {
@@ -154,8 +139,8 @@ export default function StudentDailyAttendancePage() {
 
           {/* Page Header */}
           <div className="animate-in fade-in slide-in-from-top-2 duration-500">
-            <h1 className="text-3xl md:text-4xl font-bold text-[#1a2332] mb-1">السجل اليومي للطلاب</h1>
-            <p className="text-gray-500 text-sm">عرض حضور الطلاب حسب التاريخ</p>
+            <h1 className="text-4xl md:text-5xl font-bold text-[#1a2332] mb-1">السجل اليومي للطلاب</h1>
+            <p className="text-gray-500 text-base">عرض حضور الطلاب حسب التاريخ</p>
           </div>
 
           {/* Date Filter */}
@@ -175,26 +160,18 @@ export default function StudentDailyAttendancePage() {
 
           {/* Table Card */}
           <Card className="border border-[#d8a355]/25 shadow-sm transition-shadow duration-300 hover:shadow-md animate-in fade-in slide-in-from-bottom-3 duration-500">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-[#1a2332]">سجل الحضور</CardTitle>
-                {!isFuture && filteredRecords.length > 0 && (
-                  <span className="text-sm text-gray-400">{filteredRecords.length} طالب</span>
-                )}
-              </div>
-            </CardHeader>
-            <CardContent className="pt-0">
+            <CardContent className="pt-4">
               <div className="overflow-x-auto rounded-lg border border-[#d8a355]/15">
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-[#f5f1e8]/60 border-b border-[#d8a355]/20 hover:bg-[#f5f1e8]/60">
-                      <TableHead className="text-right text-[#1a2332] font-bold">اسم الطالب</TableHead>
-                      <TableHead className="text-center text-[#1a2332] font-bold">الحفظ</TableHead>
-                      <TableHead className="text-center text-[#1a2332] font-bold">التكرار</TableHead>
-                      <TableHead className="text-center text-[#1a2332] font-bold">السماع</TableHead>
-                      <TableHead className="text-center text-[#1a2332] font-bold">الربط</TableHead>
-                      <TableHead className="text-center text-[#1a2332] font-bold">الحالة</TableHead>
-                      <TableHead className="text-center text-[#1a2332] font-bold">الملاحظات</TableHead>
+                      <TableHead className="text-right text-[#1a2332] font-bold text-base">اسم الطالب</TableHead>
+                      <TableHead className="text-center text-[#1a2332] font-bold w-24 px-1 text-base">الحفظ</TableHead>
+                      <TableHead className="text-center text-[#1a2332] font-bold w-24 px-1 text-base">التكرار</TableHead>
+                      <TableHead className="text-center text-[#1a2332] font-bold w-24 px-1 text-base">السماع</TableHead>
+                      <TableHead className="text-center text-[#1a2332] font-bold w-24 px-1 text-base">الربط</TableHead>
+                      <TableHead className="text-center text-[#1a2332] font-bold text-base">الحالة</TableHead>
+                      <TableHead className="text-center text-[#1a2332] font-bold text-base">الملاحظات</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -210,23 +187,23 @@ export default function StudentDailyAttendancePage() {
                         className="transition-colors duration-150 hover:bg-[#f5f1e8]/50 border-b border-[#d8a355]/10"
                         style={{ animationDelay: `${i * 30}ms` }}
                       >
-                        <TableCell className="font-semibold text-[#1a2332]">{record.student_name}</TableCell>
+                        <TableCell className="font-semibold text-[#1a2332] text-base">{record.student_name}</TableCell>
                         <TableCell className="text-center">
                           {(record.status === "absent" || record.status === "excused")
                             ? <span className="text-gray-300">—</span>
                             : <LevelBadge level={record.hafiz_level} />}
                         </TableCell>
-                        <TableCell className="text-center">
+                        <TableCell className="text-center px-1">
                           {(record.status === "absent" || record.status === "excused")
                             ? <span className="text-gray-300">—</span>
                             : <LevelBadge level={record.tikrar_level} />}
                         </TableCell>
-                        <TableCell className="text-center">
+                        <TableCell className="text-center px-1">
                           {(record.status === "absent" || record.status === "excused")
                             ? <span className="text-gray-300">—</span>
                             : <LevelBadge level={record.samaa_level} />}
                         </TableCell>
-                        <TableCell className="text-center">
+                        <TableCell className="text-center px-1">
                           {(record.status === "absent" || record.status === "excused")
                             ? <span className="text-gray-300">—</span>
                             : <LevelBadge level={record.rabet_level} />}
@@ -234,7 +211,7 @@ export default function StudentDailyAttendancePage() {
                         <TableCell className="text-center">
                           <StatusBadge status={record.status} />
                         </TableCell>
-                        <TableCell className="text-center text-sm max-w-[200px]">
+                        <TableCell className="text-center text-base max-w-[200px]">
                           {record.notes
                             ? <span className="text-neutral-600">{record.notes}</span>
                             : <span className="text-gray-300">—</span>}
