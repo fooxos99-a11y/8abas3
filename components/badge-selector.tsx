@@ -69,26 +69,17 @@ export function BadgeSelector({ studentId }: BadgeSelectorProps) {
   }
 
   const fetchPurchases = async () => {
+    const cached: string[] = JSON.parse(localStorage.getItem(`purchases_${studentId}`) || '[]')
     try {
-      // Load from database so purchases sync across devices
       const response = await fetch(`/api/purchases?student_id=${studentId}`)
       const data = await response.json()
-      if (data.purchases) {
-        setPurchases(data.purchases)
-        localStorage.setItem(`purchases_${studentId}`, JSON.stringify(data.purchases))
-        return
-      }
-    } catch (error) {
-      console.error("Error fetching purchases from API:", error)
-    }
-    // Fallback to localStorage cache
-    try {
-      const cached = localStorage.getItem(`purchases_${studentId}`)
-      if (cached) {
-        setPurchases(JSON.parse(cached))
-      }
+      const dbPurchases: string[] = Array.isArray(data.purchases) ? data.purchases : []
+      const merged = [...new Set([...cached, ...dbPurchases])]
+      setPurchases(merged)
+      localStorage.setItem(`purchases_${studentId}`, JSON.stringify(merged))
     } catch (error) {
       console.error("Error fetching purchases:", error)
+      setPurchases(cached)
     }
   }
 
