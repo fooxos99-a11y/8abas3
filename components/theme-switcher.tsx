@@ -109,9 +109,27 @@ export function ThemeSwitcher({ studentId }: ThemeSwitcherProps) {
     }
   }
 
-  const loadOwnedThemes = () => {
+  const loadOwnedThemes = async () => {
     if (!studentId) return
 
+    try {
+      // Load from database so purchases sync across devices
+      const response = await fetch(`/api/purchases?student_id=${studentId}`)
+      const data = await response.json()
+      if (data.purchases) {
+        const themes = (data.purchases as string[])
+          .filter((id) => id.startsWith("theme_"))
+          .map((id) => id.replace("theme_", ""))
+        setOwnedThemes([...new Set(["beige_default", ...themes])] as string[])
+        // Update local cache
+        localStorage.setItem(`purchases_${studentId}`, JSON.stringify(data.purchases))
+        return
+      }
+    } catch (error) {
+      console.error("[v0] Error loading purchases from API, falling back to cache:", error)
+    }
+
+    // Fallback: use cached localStorage
     const purchases = localStorage.getItem(`purchases_${studentId}`)
     if (purchases) {
       try {
