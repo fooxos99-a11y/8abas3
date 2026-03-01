@@ -216,27 +216,51 @@ export function EffectSelector({ studentId }: EffectSelectorProps) {
 
   useEffect(() => {
     if (studentId) {
-      const purchases = localStorage.getItem(`effect_purchases_${studentId}`)
+      loadFromDB()
+    }
+  }, [studentId])
 
+  const loadFromDB = async () => {
+    if (!studentId) return
+    try {
+      // Load owned effects from purchases API (synced across devices)
+      const purchasesRes = await fetch(`/api/purchases?student_id=${studentId}`)
+      const purchasesData = await purchasesRes.json()
+      if (purchasesData.purchases) {
+        const effects = (purchasesData.purchases as string[])
+          .filter((id) => id.startsWith("effect_"))
+          .map((id) => id.replace("effect_", ""))
+        setOwnedEffects(["default", ...effects])
+        localStorage.setItem(`effect_purchases_${studentId}`, JSON.stringify(purchasesData.purchases.filter((id: string) => id.startsWith("effect_"))))
+      }
+
+      // Load active effect from effects API (synced across devices)
+      const effectRes = await fetch(`/api/effects?studentId=${studentId}`)
+      const effectData = await effectRes.json()
+      if (effectData.active_effect) {
+        setCurrentEffect(effectData.active_effect)
+        localStorage.setItem(`active_effect_${studentId}`, effectData.active_effect)
+      } else {
+        const cached = localStorage.getItem(`active_effect_${studentId}`)
+        setCurrentEffect(cached || "default")
+      }
+    } catch (error) {
+      console.error("Error loading effect data:", error)
+      // Fallback to localStorage
+      const purchases = localStorage.getItem(`effect_purchases_${studentId}`)
       if (purchases) {
         try {
           const purchaseList = JSON.parse(purchases)
           const effects = purchaseList.map((id: string) => id.replace("effect_", ""))
           setOwnedEffects(["default", ...effects])
-        } catch (error) {
-          console.error("Error parsing purchases:", error)
+        } catch {
           setOwnedEffects(["default"])
         }
       }
-
       const activeEffect = localStorage.getItem(`active_effect_${studentId}`)
-      if (activeEffect) {
-        setCurrentEffect(activeEffect)
-      } else {
-        setCurrentEffect("default")
-      }
+      setCurrentEffect(activeEffect || "default")
     }
-  }, [studentId])
+  }
 
   const handleEffectChange = async (effectName: string) => {
     if (!ownedEffects.includes(effectName)) {
@@ -252,13 +276,24 @@ export function EffectSelector({ studentId }: EffectSelectorProps) {
     setSaveMessage("جاري الحفظ...")
 
     try {
-      localStorage.setItem(`active_effect_${studentId}`, effectName)
-      setCurrentEffect(effectName)
-      setSaveMessage("")
+      // Save active effect to database so it syncs across devices
+      const response = await fetch("/api/effects", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ studentId, effect: effectName }),
+      })
 
-      setTimeout(() => {
-        window.dispatchEvent(new Event("storage"))
-      }, 500)
+      if (response.ok) {
+        localStorage.setItem(`active_effect_${studentId}`, effectName)
+        setCurrentEffect(effectName)
+        setSaveMessage("")
+        setTimeout(() => {
+          window.dispatchEvent(new Event("storage"))
+        }, 500)
+      } else {
+        setSaveMessage("❌ خطأ في حفظ التأثير")
+        setTimeout(() => setSaveMessage(""), 3000)
+      }
     } catch (error) {
       console.error("Error saving effect:", error)
       setSaveMessage("❌ خطأ في حفظ التأثير")
