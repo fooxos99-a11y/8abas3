@@ -136,16 +136,23 @@ export default function BackgroundsPage() {
 
   const fetchPurchases = async (studentId: string) => {
     try {
-      const purchases = localStorage.getItem(`purchases_${studentId}`)
-      const notActivated = localStorage.getItem(`bg_not_activated_${studentId}`)
-      if (purchases) {
-        setPurchases(JSON.parse(purchases))
+      // Load from database so purchases sync across devices
+      const response = await fetch(`/api/purchases?student_id=${studentId}`)
+      const data = await response.json()
+      if (data.purchases) {
+        setPurchases(data.purchases)
+        localStorage.setItem(`purchases_${studentId}`, JSON.stringify(data.purchases))
       }
+      const notActivated = localStorage.getItem(`bg_not_activated_${studentId}`)
       if (notActivated) {
-        setPurchasedNotActivated(JSON.parse(notActivated))
+        // Only keep items that haven't been officially added to purchases yet
+        const pending = JSON.parse(notActivated).filter((id: string) => !data.purchases?.includes(id))
+        setPurchasedNotActivated(pending)
       }
     } catch (error) {
       console.error("[v0] Error fetching purchases:", error)
+      const cached = localStorage.getItem(`purchases_${studentId}`)
+      if (cached) setPurchases(JSON.parse(cached))
     }
   }
 
@@ -221,17 +228,34 @@ export default function BackgroundsPage() {
     }
 
     try {
-      const newPoints = studentPoints - product.price
-      setStudentPoints(newPoints)
-
-      const updatedNotActivated = [...purchasedNotActivated, product.id]
-      setPurchasedNotActivated(updatedNotActivated)
-      localStorage.setItem(`bg_not_activated_${studentId}`, JSON.stringify(updatedNotActivated))
-
-      toast({
-        title: "تم الشراء بنجاح!",
-        description: "يرجى الضغط على 'تفعيل' لتفعيل الخلفية",
+      const response = await fetch("/api/purchases", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          student_id: studentId,
+          product_id: product.id,
+          price: product.price,
+        }),
       })
+
+      if (response.ok) {
+        const result = await response.json()
+        setStudentPoints(result.remaining_points)
+        const updatedNotActivated = [...purchasedNotActivated, product.id]
+        setPurchasedNotActivated(updatedNotActivated)
+        localStorage.setItem(`bg_not_activated_${studentId}`, JSON.stringify(updatedNotActivated))
+        toast({
+          title: "تم الشراء بنجاح!",
+          description: "يرجى الضغط على 'تفعيل' لتفعيل الخلفية",
+        })
+      } else {
+        const err = await response.json()
+        toast({
+          title: "خطأ",
+          description: err.error || "فشل الشراء",
+          variant: "destructive",
+        })
+      }
     } catch (error) {
       console.error("[v0] Error purchasing:", error)
       toast({
@@ -260,9 +284,13 @@ export default function BackgroundsPage() {
         setPurchasedNotActivated(updatedNotActivated)
         localStorage.setItem(`bg_not_activated_${studentId}`, JSON.stringify(updatedNotActivated))
 
-        const updatedPurchases = [...purchases, product.id]
-        setPurchases(updatedPurchases)
-        localStorage.setItem(`purchases_${studentId}`, JSON.stringify(updatedPurchases))
+        // Refresh purchases from DB to keep in sync
+        const res = await fetch(`/api/purchases?student_id=${studentId}`)
+        const data = await res.json()
+        if (data.purchases) {
+          setPurchases(data.purchases)
+          localStorage.setItem(`purchases_${studentId}`, JSON.stringify(data.purchases))
+        }
 
         setActiveTheme(product.themeValue)
         console.log("[v0] Theme activated:", product.themeValue)
