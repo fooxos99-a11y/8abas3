@@ -284,27 +284,21 @@ export default function EffectsPage() {
   }
 
   const fetchPurchases = async (studentId: string) => {
+    const cached: string[] = JSON.parse(localStorage.getItem(`effect_purchases_${studentId}`) || '[]')
+    const notActivatedCached: string[] = JSON.parse(localStorage.getItem(`effect_not_activated_${studentId}`) || '[]')
     try {
-      // Load from database so purchases sync across devices
       const response = await fetch(`/api/purchases?student_id=${studentId}`)
       const data = await response.json()
-      if (data.purchases) {
-        const effectPurchases = data.purchases.filter((id: string) => id.startsWith('effect_'))
-        setPurchases(effectPurchases)
-        localStorage.setItem(`effect_purchases_${studentId}`, JSON.stringify(effectPurchases))
-      }
-      const notActivated = localStorage.getItem(`effect_not_activated_${studentId}`)
-      if (notActivated) {
-        const pending = JSON.parse(notActivated).filter((id: string) => !(data.purchases || []).includes(id))
-        setPurchasedNotActivated(pending)
-      }
+      const dbPurchases: string[] = Array.isArray(data.purchases) ? data.purchases.filter((id: string) => id.startsWith('effect_')) : []
+      const merged = [...new Set([...cached, ...dbPurchases])]
+      setPurchases(merged)
+      localStorage.setItem(`effect_purchases_${studentId}`, JSON.stringify(merged))
+      const pending = notActivatedCached.filter((id: string) => !dbPurchases.includes(id))
+      setPurchasedNotActivated(pending)
     } catch (error) {
       console.error("Error fetching purchases:", error)
-      // Fallback: use localStorage cache
-      const cached = localStorage.getItem(`effect_purchases_${studentId}`)
-      if (cached) setPurchases(JSON.parse(cached))
-      const notActivated = localStorage.getItem(`effect_not_activated_${studentId}`)
-      if (notActivated) setPurchasedNotActivated(JSON.parse(notActivated))
+      setPurchases(cached)
+      setPurchasedNotActivated(notActivatedCached)
     }
   }
 
