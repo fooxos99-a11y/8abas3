@@ -676,6 +676,25 @@ export function Header() {
         {/* محتوى الدرج */}
 
         <div className="flex-1 overflow-y-auto bg-[#f9fafb] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+
+          {isLoggedIn && userRole === "teacher" && (
+            <div className="px-2 mt-2 mb-0">
+              <NavItem
+                icon={Users}
+                label="إدارة الحلقة"
+                onClick={() => handleNav("/teacher/halaqah/1")}
+              />
+              <NavItem
+                icon={ClipboardCheck}
+                label="التحضير"
+                onClick={() => {
+                  setIsAttendanceModalOpen(true);
+                  setIsMobileMenuOpen(false);
+                }}
+              />
+            </div>
+          )}
+
           <SectionHeader title="المعلومات العامة" />
 
           <div className="px-2 mb-2">
@@ -758,30 +777,6 @@ export function Header() {
               />
             )}
           </div>
-
-          {isLoggedIn && userRole === "teacher" && (
-            <>
-              <SectionHeader title="الإدارة" />
-
-              <div className="px-2 mb-2">
-                <NavItem
-                  icon={Users}
-                  label="إدارة الحلقة"
-                  onClick={() => handleNav("/teacher/halaqah/1")}
-                />
-
-                <NavItem
-                  icon={ClipboardCheck}
-                  label="التحضير"
-                  onClick={() => {
-                    setIsAttendanceModalOpen(true);
-
-                    setIsMobileMenuOpen(false);
-                  }}
-                />
-              </div>
-            </>
-          )}
 
           {isLoggedIn && isAdmin && (
             <>
